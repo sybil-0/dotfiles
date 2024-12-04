@@ -1,0 +1,15 @@
+{{- if eq .chezmoi.os "windows" }}
+scripts
+.config/fish
+.config/kitty
+.config/zsh-abbr
+.vimrc
+.ohmyposh.json
+.zsh_plugins.txt
+.zshrc
+{{- end }}
+
+{{- if eq .chezmoi.os "linux" }}
+AppData
+Documents
+{{- end }}
