@@ -1,6 +1,4 @@
 ;; various utility functions
-
-
 (defun increment-number-at-point ()
   "Increment the number at point, if there is one."
   (interactive)
