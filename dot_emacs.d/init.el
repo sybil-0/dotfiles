@@ -107,9 +107,15 @@
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
-(use-package pet
+;; automatic virtualenv setup for python
+(use-package auto-virtualenv
+  :ensure t
+  :init
+  (use-package pyvenv
+    :ensure t)
   :config
-  (add-hook 'python-base-mode-hook 'pet-mode -10))
+  (add-hook 'python-mode-hook 'auto-virtualenv-set-virtualenv)
+  (add-hook 'projectile-after-switch-project-hook 'auto-virtualenv-set-virtualenv)) ;; If using projectile)
 
 (use-package lua-mode)
 
@@ -117,7 +123,7 @@
   :ensure t
   :custom
   (evil-undo-system 'undo-redo)
-  (evil-want-keybinding nil)
+  ;; (evil-want-keybinding nil)
   (evil-want-C-u-scroll 1)
   :config (evil-mode 1))
 
@@ -127,9 +133,10 @@
   :config
   (evil-collection-init))
 
-(use-package evil-paredit
+(use-package enhanced-evil-paredit
   :ensure t
-  :init (add-hook 'paredit-mode-hook #'evil-paredit-mode))
+  :config
+  (add-hook 'paredit-mode-hook #'enhanced-evil-paredit-mode))
 
 (use-package evil-escape
   :ensure t
@@ -286,3 +293,4 @@
 
 (provide 'init)
 ;;; init.el ends here
+
