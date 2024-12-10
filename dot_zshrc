@@ -6,6 +6,7 @@ path+=('/home/kevinh/bin')
 path+=('/home/kevinh/.local/bin')
 path+=('/home/kevinh/soft/zig')
 path+=('/home/kevinh/.ghcup/bin')
+path+=('/home/linuxbrew/.linuxbrew/bin')
 
 # nice prompt with good default settings
 eval "$(starship init zsh)"
@@ -14,12 +15,15 @@ eval "$(starship init zsh)"
 . "$HOME/.atuin/bin/env"
 eval "$(atuin init zsh)"
 
-# rust setup
-. "$HOME/.cargo/env"
-
 # ls replacement
 alias ls='eza --long --header --git'
 # haskell setup
 [ -f "/home/kevinh/.ghcup/env" ] && . "/home/kevinh/.ghcup/env" # ghcup-env
 # brew package manager
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+. "$HOME/.local/bin/env"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

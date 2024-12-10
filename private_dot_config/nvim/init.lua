@@ -6,7 +6,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	if vim.v.shell_error ~= 0 then
 		vim.api.nvim_echo({
 			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-			{ out, "WarningMsg" },
+			{ out,                            "WarningMsg" },
 			{ "\nPress any key to exit..." },
 		}, true, {})
 		vim.fn.getchar()
@@ -30,15 +30,51 @@ require("lazy").setup({
 				require("mason").setup()
 			end,
 		},
-		{ "EdenEast/nightfox.nvim" },
+		{
+			"folke/lazydev.nvim",
+			ft = "lua", -- only load on lua files
+			opts = {
+				library = {
+					-- See the configuration section for more details
+					-- Load luvit types when the `vim.uv` word is found
+					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
+
+				},
+			},
+		},
+		{
+			"EdenEast/nightfox.nvim",
+			config = function()
+				vim.o.termguicolors = true
+				vim.o.background = 'dark'
+				vim.cmd.colorscheme 'nightfox'
+			end
+		},
+		{
+			"nyoom-engineering/oxocarbon.nvim"
+			-- Add in any other configuration;
+			--   event = foo,
+			--   config = bar
+			--   end,
+		},
+		{
+			'maxmx03/solarized.nvim',
+			lazy = false,
+			priority = 1000,
+			---@type solarized.config
+			opts = {},
+			config = function(_, opts)
+				vim.o.termguicolors = true
+				vim.o.background = 'dark'
+				require('solarized').setup(opts)
+				vim.cmd.colorscheme 'solarized'
+			end,
+		},
 		{
 			"folke/tokyonight.nvim",
 			lazy = false,
 			priority = 1000,
 			opts = {},
-			config = function()
-				vim.cmd([[colorscheme carbonfox]])
-			end,
 		},
 		{
 			"nvim-telescope/telescope.nvim",
@@ -63,11 +99,6 @@ require("lazy").setup({
 				require("oil").setup()
 				vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 			end,
-		},
-		{
-			"ThePrimeagen/harpoon",
-			branch = "harpoon2",
-			dependencies = { "nvim-lua/plenary.nvim" },
 		},
 		{
 			"folke/which-key.nvim",
@@ -112,7 +143,7 @@ require("lazy").setup({
 
 				-- Document existing key chains
 				spec = {
-					{ "<leader>f", group = "[F]ile operations", mode = { "n", "x" } },
+					{ "<leader>f", group = "[F]ile operations",  mode = { "n", "x" } },
 					{ "<leader>b", group = "[B]uffer operations" },
 					{ "<leader>e", group = "Explorer" },
 					{ "<leader>a", group = "Code [A]ctions" },
@@ -137,7 +168,7 @@ require("lazy").setup({
 			event = "InsertEnter",
 			config = true,
 		},
-		{ "VonHeikemen/lsp-zero.nvim", branch = "v4.x" },
+		{ "VonHeikemen/lsp-zero.nvim",        branch = "v4.x" },
 		{ "williamboman/mason.nvim" },
 		{ "williamboman/mason-lspconfig.nvim" },
 		{ "neovim/nvim-lspconfig" },
@@ -149,8 +180,6 @@ require("lazy").setup({
 		{ "saadparwaiz1/cmp_luasnip" },
 		{ "rafamadriz/friendly-snippets" },
 	},
-	-- Configure any other settings here. See the documentation for more details.
-	-- colorscheme that will be used when installing plugins.
 	install = { colorscheme = { "nightfox" } },
 	-- automatically check for plugin updates
 	checker = { enabled = true },
@@ -254,7 +283,7 @@ cmp.setup({
 		{ name = "path" },
 		{ name = "nvim_lsp" },
 		{ name = "luasnip", keyword_length = 2 },
-		{ name = "buffer", keyword_length = 3 },
+		{ name = "buffer",  keyword_length = 3 },
 	},
 	window = {
 		completion = cmp.config.window.bordered(),
@@ -298,65 +327,6 @@ require("telescope").setup({
 		},
 	},
 })
-
--- Harpoon config
-local harpoon = require("harpoon")
-
--- REQUIRED
-harpoon:setup()
--- REQUIRED
-
-vim.keymap.set("n", "<leader>a", function()
-	harpoon:list():add()
-end)
-vim.keymap.set("n", "<C-e>", function()
-	harpoon.ui:toggle_quick_menu(harpoon:list())
-end)
-
-vim.keymap.set("n", "<C-h>", function()
-	harpoon:list():select(1)
-end)
-vim.keymap.set("n", "<C-t>", function()
-	harpoon:list():select(2)
-end)
-vim.keymap.set("n", "<C-n>", function()
-	harpoon:list():select(3)
-end)
-vim.keymap.set("n", "<C-s>", function()
-	harpoon:list():select(4)
-end)
-
--- Toggle previous & next buffers stored within Harpoon list
-vim.keymap.set("n", "<C-S-P>", function()
-	harpoon:list():prev()
-end)
-vim.keymap.set("n", "<C-S-N>", function()
-	harpoon:list():next()
-end)
-
--- basic telescope configuration
-local conf = require("telescope.config").values
-local function toggle_telescope(harpoon_files)
-	local file_paths = {}
-	for _, item in ipairs(harpoon_files.items) do
-		table.insert(file_paths, item.value)
-	end
-
-	require("telescope.pickers")
-		.new({}, {
-			prompt_title = "Harpoon",
-			finder = require("telescope.finders").new_table({
-				results = file_paths,
-			}),
-			previewer = conf.file_previewer({}),
-			sorter = conf.generic_sorter({}),
-		})
-		:find()
-end
-
-vim.keymap.set("n", "<C-e>", function()
-	toggle_telescope(harpoon:list())
-end, { desc = "Open harpoon window" })
 
 -- Automatic Formatting
 

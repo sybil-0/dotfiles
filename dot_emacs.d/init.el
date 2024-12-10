@@ -56,18 +56,16 @@
 ;; PACKAGES ;;
 ;;;;;;;;;;;;;;
 
-(setq use-package-always-ensure t)
+(setq use-package-always-ensures t)
 
-(use-package solarized-theme
-  :config (load-theme 'solarized-dark t))
+(use-package solarized-theme)
 
 (use-package catppuccin-theme)
 
-(use-package doom-themes)
+(use-package doom-themes
+  (load-theme 'doom-tokyo-night t))
 
-(use-package ef-themes
-  ;;:config (load-theme 'ef-bio t)
-  )
+(use-package ef-themes)
 
 (use-package magit)
 
