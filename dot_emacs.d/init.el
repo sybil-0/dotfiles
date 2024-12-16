@@ -62,8 +62,7 @@
 
 (use-package catppuccin-theme)
 
-(use-package doom-themes
-  (load-theme 'doom-tokyo-night t))
+(use-package doom-themes)
 
 (use-package ef-themes)
 
@@ -211,6 +210,9 @@
 (use-package company-quickhelp
   :config (company-quickhelp-mode))
 
+
+;; load evil configuration
+(load-file "~/.emacs.d/elisp/completion-config.el")
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY FUNCTIONS ;;

@@ -6,7 +6,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	if vim.v.shell_error ~= 0 then
 		vim.api.nvim_echo({
 			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-			{ out,                            "WarningMsg" },
+			{ out, "WarningMsg" },
 			{ "\nPress any key to exit..." },
 		}, true, {})
 		vim.fn.getchar()
@@ -38,7 +38,6 @@ require("lazy").setup({
 					-- See the configuration section for more details
 					-- Load luvit types when the `vim.uv` word is found
 					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
-
 				},
 			},
 		},
@@ -46,28 +45,28 @@ require("lazy").setup({
 			"EdenEast/nightfox.nvim",
 			config = function()
 				vim.o.termguicolors = true
-				vim.o.background = 'dark'
-				vim.cmd.colorscheme 'nightfox'
-			end
+				vim.o.background = "dark"
+				vim.cmd.colorscheme("carbonfox")
+			end,
 		},
 		{
-			"nyoom-engineering/oxocarbon.nvim"
+			"nyoom-engineering/oxocarbon.nvim",
 			-- Add in any other configuration;
 			--   event = foo,
 			--   config = bar
 			--   end,
 		},
 		{
-			'maxmx03/solarized.nvim',
+			"maxmx03/solarized.nvim",
 			lazy = false,
 			priority = 1000,
 			---@type solarized.config
 			opts = {},
 			config = function(_, opts)
 				vim.o.termguicolors = true
-				vim.o.background = 'dark'
-				require('solarized').setup(opts)
-				vim.cmd.colorscheme 'solarized'
+				vim.o.background = "dark"
+				require("solarized").setup(opts)
+				vim.cmd.colorscheme("solarized")
 			end,
 		},
 		{
@@ -143,7 +142,7 @@ require("lazy").setup({
 
 				-- Document existing key chains
 				spec = {
-					{ "<leader>f", group = "[F]ile operations",  mode = { "n", "x" } },
+					{ "<leader>f", group = "[F]ile operations", mode = { "n", "x" } },
 					{ "<leader>b", group = "[B]uffer operations" },
 					{ "<leader>e", group = "Explorer" },
 					{ "<leader>a", group = "Code [A]ctions" },
@@ -168,7 +167,8 @@ require("lazy").setup({
 			event = "InsertEnter",
 			config = true,
 		},
-		{ "VonHeikemen/lsp-zero.nvim",        branch = "v4.x" },
+		{ "Olical/conjure" },
+		{ "oHeikemen/lsp-zero.nvim", branch = "v4.x" },
 		{ "williamboman/mason.nvim" },
 		{ "williamboman/mason-lspconfig.nvim" },
 		{ "neovim/nvim-lspconfig" },
@@ -283,7 +283,7 @@ cmp.setup({
 		{ name = "path" },
 		{ name = "nvim_lsp" },
 		{ name = "luasnip", keyword_length = 2 },
-		{ name = "buffer",  keyword_length = 3 },
+		{ name = "buffer", keyword_length = 3 },
 	},
 	window = {
 		completion = cmp.config.window.bordered(),
