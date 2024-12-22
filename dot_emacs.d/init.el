@@ -210,6 +210,36 @@
 (use-package company-quickhelp
   :config (company-quickhelp-mode))
 
+(use-package tree-sitter
+  :init
+  (setq treesit-language-source-alist
+	'((bash "https://github.com/tree-sitter/tree-sitter-bash")
+	  (cmake "https://github.com/uyha/tree-sitter-cmake")
+	  (css "https://github.com/tree-sitter/tree-sitter-css")
+	  (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+	  (go "https://github.com/tree-sitter/tree-sitter-go")
+	  (html "https://github.com/tree-sitter/tree-sitter-html")
+	  (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+	  (json "https://github.com/tree-sitter/tree-sitter-json")
+	  (make "https://github.com/alemuller/tree-sitter-make")
+	  (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+	  (python "https://github.com/tree-sitter/tree-sitter-python")
+	  (toml "https://github.com/tree-sitter/tree-sitter-toml")
+	  (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+	  (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+	  (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+  (setq major-mode-remap-alist
+	'((yaml-mode . yaml-ts-mode)
+	  (bash-mode . bash-ts-mode)
+	  (js2-mode . js-ts-mode)
+	  (typescript-mode . typescript-ts-mode)
+	  (json-mode . json-ts-mode)
+	  (css-mode . css-ts-mode)
+	  (python-mode . python-ts-mode)))
+  :config (global-tree-sitter-mode +1))
+
+(use-package tree-sitter-langs)
+
 
 ;; load evil configuration
 (load-file "~/.emacs.d/elisp/completion-config.el")
@@ -221,7 +251,6 @@
 (defun consult-switch-buffer-kill ()
   "Kill candidate buffer at point within the minibuffer completion."
   (interactive)
-					; The vertico--candidate has a irregular char at the end.
   (let ((name  (substring (vertico--candidate) 0 -1)))
     (when (bufferp (get-buffer name))
       (kill-buffer name))))
@@ -239,7 +268,6 @@
 (global-set-key (kbd "M-p") 'scroll-down-command)
 (global-set-key (kbd "C-x t f") 'toggle-frame-fullscreen)
 (global-set-key (kbd "C-x t m") 'toggle-frame-maximized)
-
 (keymap-set minibuffer-local-map "C-k" 'consult-switch-buffer-kill)
 
 
