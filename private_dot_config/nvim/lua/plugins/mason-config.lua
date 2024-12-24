@@ -5,5 +5,10 @@ return {
       require('mason').setup()
     end,
   },
-  { 'williamboman/mason-lspconfig.nvim' },
+  {
+    'williamboman/mason-lspconfig.nvim',
+    config = function()
+      require('mason-lspconfig').setup()
+    end,
+  },
 }
