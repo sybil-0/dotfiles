@@ -11,3 +11,5 @@ abbr -a agi 'sudo apt install -y'
 starship init fish | source
 # smarter cd
 zoxide init fish | source
+# auto correction of borked commands
+thefuck --alias | source
