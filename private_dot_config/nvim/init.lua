@@ -50,7 +50,7 @@ vim.opt.termguicolors = true
 -- General Keymaps
 vim.keymap.set('i', 'jk', '<Esc>')
 vim.keymap.set('t', 'jk', [[<C-\><C-n>]]) -- normal mode mapping for term emulator
-vim.keymap.set('n', '<leader>ex', ':Ex %:p:h<CR>', { desc = 'open file explorer' })
+vim.keymap.set('n', '<leader>ex', ':Oil %:p:h<CR>', { desc = 'open file explorer' })
 -- other custom keybindings
 vim.keymap.set('n', '<leader>bh', '<CMD>browse oldfiles<CR>', { desc = 'browse history' })
 vim.keymap.set('n', '<leader>bd', '<CMD>bdelete<CR>', {})
