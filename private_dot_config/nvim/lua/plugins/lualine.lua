@@ -4,7 +4,7 @@ return {
   config = function()
     require('lualine').setup {
       options = {
-        theme = 'oxocarbon',
+        theme = 'tokyonight-night',
         section_separators = { '▢', '▢' }, -- Use square characters for section separators
         component_separators = { '▢', '▢' }, -- Use square characters for component separators
       },

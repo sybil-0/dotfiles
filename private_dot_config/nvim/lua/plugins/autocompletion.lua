@@ -35,6 +35,7 @@ return {
         lua_ls = {},
         pyright = {},
         gopls = {},
+        zls = {},
       },
     },
     config = function(_, opts)
