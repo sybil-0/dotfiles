@@ -1,9 +1,6 @@
 # pretty prompt
 curl -sS https://starship.rs/install.sh | sh
 
-# dotfile management 
-sh -c "$(curl -fsLS get.chezmoi.io)"
-
 git config --global user.name "Kevin Hermann"
 git config --global user.email "hermannkevin@gmail.com"
 
@@ -18,6 +15,7 @@ sudo update-alternatives --set editor /usr/bin/vim.basic
 # Terminal Multiplexer, modern tmux alternative
 bash <(curl -L zellij.dev/launch)
 
+chsh -s /usr/bin/fish
 
-
-
+# On macOS and Linux.
+curl -LsSf https://astral.sh/uv/install.sh | sh
