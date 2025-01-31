@@ -9,6 +9,11 @@ abbr -a zin  'sudo zypper in -y'
 abbr -a zup  'sudo zypper dup'
 abbr -a zdel  'sudo zypper remove'
 abbr -a zfd  'zypper search'
+# fedora 
+abbr -a dnfi 'sudo dnf install -y'
+abbr -a dnfr 'sudo dnf remove'
+abbr -a dnfu 'sudo dnf upgrade'
+abbr -a dnfs 'dnf search'
 
 
 # customized prompt

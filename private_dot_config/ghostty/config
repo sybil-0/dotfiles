@@ -1,6 +1,6 @@
-theme = tokyonight_night
+theme = Oxocarbon
 # font-family = CaskaydiaCove Nerd Font
-font-family = JetBrains Mono
+font-family = Fira Code Medium
 font-size = 13
 
 # create new splits
