@@ -1,29 +1,23 @@
-# zsh package manager setup
-source ~/.antidote/antidote.zsh
-antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# theme
+ZSH_THEME="robbyrussell"
+
+plugins=(
+    git 
+    zsh-syntax-highlighting   
+    zsh-autosuggestions
+    zsh-completions
+    zsh-history-substring-search
+    zsh-abbr
+)
+
+source $ZSH/oh-my-zsh.sh
 
 path+=('/home/kevinh/bin')
 path+=('/home/kevinh/.local/bin')
-path+=('/home/kevinh/soft/zig')
-path+=('/home/kevinh/.ghcup/bin')
-path+=('/home/linuxbrew/.linuxbrew/bin')
+path+=('/usr/local/bin')
 
-# nice prompt with good default settings
-eval "$(starship init zsh)"
-
-# improved shell history
-. "$HOME/.atuin/bin/env"
-eval "$(atuin init zsh)"
-
-# ls replacement
-alias ls='eza --long --header --git'
-# haskell setup
-[ -f "/home/kevinh/.ghcup/env" ] && . "/home/kevinh/.ghcup/env" # ghcup-env
-# brew package manager
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-. "$HOME/.local/bin/env"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# zoxide - smarter cd movement
+eval "$(zoxide init zsh)"
