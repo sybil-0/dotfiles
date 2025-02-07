@@ -25,3 +25,7 @@ path+=('/usr/local/bin')
 eval "$(zoxide init zsh)"
 # starship prompt
 eval "$(starship init zsh)"
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"
