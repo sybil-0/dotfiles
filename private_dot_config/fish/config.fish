@@ -14,6 +14,11 @@ abbr -a dnfi 'sudo dnf install -y'
 abbr -a dnfr 'sudo dnf remove'
 abbr -a dnfu 'sudo dnf upgrade'
 abbr -a dnfs 'dnf search'
+# fedora 
+abbr -a pacin 'sudo pacman -S'
+abbr -a pacrm 'sudo pacman -Rs'
+abbr -a pacup 'sudo pacman -Syu'
+abbr -a pacfd 'sudo pacman -Ss'
 
 
 # customized prompt

@@ -15,3 +15,4 @@ zoxide
 gh
 wl-clipboard
 fd-find
+

@@ -3,8 +3,6 @@ call plug#begin()
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'lifepillar/vim-solarized8'
-Plug 'catppuccin/vim', { 'as': 'catppuccin' }
-
 
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
@@ -44,10 +42,9 @@ filetype plugin indent on
 syntax on
 
 set termguicolors
-set background=light
-colorscheme catppuccin_mocha
-let g:airline_theme = 'catppuccin_mocha'
-
+set background=dark
+colorscheme solarized8
+let g:airline_theme='solarized'
 
 " keybindings
 inoremap jk <Esc>
