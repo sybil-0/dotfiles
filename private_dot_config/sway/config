@@ -24,10 +24,11 @@ smart_borders on
 smart_gaps on
 gaps inner 5
 
+
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
-set $mod Mod4
+set $mod Mod1
 # Home row direction keys, like vim
 set $left h
 set $down j
@@ -36,7 +37,7 @@ set $right l
 # Your preferred terminal emulator
 set $term ghostty
 # Your preferred application launcher
-set $menu wmenu-run
+set $menu wmenu-run -f "Inter 11"
 
 ### Output configuration
 #
@@ -202,16 +203,17 @@ bindsym $mod+r mode "resize"
 # Read `man 5 sway-bar` for more information about this section.
 bar {
     position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
     status_command while date +'%Y-%m-%d %X'; do sleep 1; done
 
     colors {
         statusline #ffffff
-        background #323232
+        background #181818
         inactive_workspace #32323200 #32323200 #5c5c5c
     }
 }
 
 include @sysconfdir@/sway/config.d/*
+
+
+# startup programs 
+exec gammastep -O 4500 &  # softer colors at night
