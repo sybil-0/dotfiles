@@ -1,7 +1,7 @@
 theme = Oxocarbon
 # font-family = CaskaydiaCove Nerd Font
-font-family = JetBrains Mono
-font-size = 13
+font-family = Cascadia Code
+font-size = 14
 
 # create new splits
 keybind = ctrl+x>v=new_split:right
