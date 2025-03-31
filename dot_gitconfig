@@ -45,3 +45,6 @@
         conflictstyle = zdiff3 
 [pull]
         rebase = true
+[user]
+	email = hermannkevin@gmail.com
+	name = Kevin Hermann

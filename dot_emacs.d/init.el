@@ -245,18 +245,18 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(use-package company
+;; Enable Corfu for in-buffer completion
+(use-package corfu
   :ensure t
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto-completion
+  (corfu-auto-prefix 2)          ;; Minimum prefix length for auto-completion
+  (corfu-auto-delay 0.2)         ;; Delay before auto-completion starts
+  (corfu-quit-no-match 'separator) ;; Close popup if no match
   :init
-  (global-set-key (kbd "C-x C-n") 'company-complete)
-  (global-company-mode +1)
-  ;; Adjust delay and minimum prefix length for company mode
-  (setq company-idle-delay 0.2
-        company-minimum-prefix-length 2))
-
-(use-package company-quickhelp
-  :ensure t
-  :config (company-quickhelp-mode))
+  (global-corfu-mode)
+  (corfu-popupinfo-mode +1))
 
 (use-package tree-sitter
   :ensure t
