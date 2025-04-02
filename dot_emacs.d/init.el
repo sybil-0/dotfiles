@@ -86,7 +86,8 @@
   (load custom-file))
 
 ;; set typeface
-(add-to-list 'default-frame-alist '(font . "Cascadia Code 14"))
+;; (add-to-list 'default-frame-alist '(font . "Cascadia Code 14"))
+(add-to-list 'default-frame-alist '(font . "TX-02 14"))
 
 ;;;;;;;;;;;;;;
 ;; PACKAGES ;;
@@ -168,6 +169,19 @@
 (use-package yasnippet
   :ensure t
   :config (yas-global-mode +1))
+
+;; Rust mode
+(use-package rust-mode
+  :hook (rust-mode . eglot-ensure)
+  :config
+  (setq rust-format-on-save t))
+
+;; LSP support via eglot
+(use-package eglot
+  :config
+  (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
+  (add-to-list 'eglot-server-programs '(python-mode . ("pyright")))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Completion and Navigation ;;

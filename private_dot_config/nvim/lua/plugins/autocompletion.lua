@@ -1,37 +1,17 @@
 return {
-	{
-		'saghen/blink.nvim',
-		build = 'cargo build --release', -- for delimiters
-		keys = {
-			-- chartoggle
-			{
-				'<C-;>',
-				function()
-					require('blink.chartoggle').toggle_char_eol(';')
-				end,
-				mode = { 'n', 'v' },
-				desc = 'Toggle ; at eol',
-			},
-			{
-				',',
-				function()
-					require('blink.chartoggle').toggle_char_eol(',')
-				end,
-				mode = { 'n', 'v' },
-				desc = 'Toggle , at eol',
-			},
-
-			-- tree
-			{ '<C-e>',     '<cmd>BlinkTree reveal<cr>',       desc = 'Reveal current file in tree' },
-			{ '<leader>E', '<cmd>BlinkTree toggle<cr>',       desc = 'Reveal current file in tree' },
-			{ '<leader>e', '<cmd>BlinkTree toggle-focus<cr>', desc = 'Toggle file tree focus' },
-		},
-		-- all modules handle lazy loading internally
-		lazy = false,
-		opts = {
-			chartoggle = { enabled = true },
-			indent = { enabled = true },
-			tree = { enabled = true }
-		}
-	}
+  {
+    'neovim/nvim-lspconfig',
+    config = function()
+      require('lspconfig').pyright.setup {}
+      require('lspconfig').lua_ls.setup {}
+      vim.api.nvim_create_autocmd('LspAttach', {
+        callback = function(ev)
+          local client = vim.lsp.get_client_by_id(ev.data.client_id)
+          if client:supports_method 'textDocument/completion' then
+            vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+          end
+        end,
+      })
+    end,
+  },
 }
