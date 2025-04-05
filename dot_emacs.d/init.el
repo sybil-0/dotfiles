@@ -87,7 +87,7 @@
 
 ;; set typeface
 ;; (add-to-list 'default-frame-alist '(font . "Cascadia Code 14"))
-(add-to-list 'default-frame-alist '(font . "TX-02 14"))
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono 13"))
 
 ;;;;;;;;;;;;;;
 ;; PACKAGES ;;
