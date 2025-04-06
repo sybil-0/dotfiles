@@ -65,3 +65,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
+
+-- LSP CONFIG
+vim.lsp.enable { 'pyright', 'lua_ls' }
