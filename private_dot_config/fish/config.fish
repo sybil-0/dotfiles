@@ -19,7 +19,8 @@ abbr -a pacin 'sudo pacman -S'
 abbr -a pacrm 'sudo pacman -Rs'
 abbr -a pacup 'sudo pacman -Syu'
 abbr -a pacfd 'sudo pacman -Ss'
-
+# git 
+abbr -a gitscd 'git config credential.helper store'
 
 # customized prompt
 # oh-my-posh init fish --config ~/.ohmyposh.json | source
@@ -30,12 +31,3 @@ zoxide init fish | source
 thefuck --alias | source
 # better shell history
 atuin init fish | source
-
-
-# BEGIN opam configuration
-# This is useful if you're using opam as it adds:
-#   - the correct directories to the PATH
-#   - auto-completion for the opam binary
-# This section can be safely removed at any time if needed.
-test -r '/home/kevinh/.opam/opam-init/init.fish' && source '/home/kevinh/.opam/opam-init/init.fish' > /dev/null 2> /dev/null; or true
-# END opam configuration
