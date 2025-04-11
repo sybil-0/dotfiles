@@ -2,48 +2,9 @@
 ;; PACKAGE MANAGER SETUP ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defvar elpaca-installer-version 0.10)
-(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                              :ref nil :depth 1 :inherit ignore
-                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                              :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-       (build (expand-file-name "elpaca/" elpaca-builds-directory))
-       (order (cdr elpaca-order))
-       (default-directory repo))
-  (add-to-list 'load-path (if (file-exists-p build) build repo))
-  (unless (file-exists-p repo)
-    (make-directory repo t)
-    (when (<= emacs-major-version 28) (require 'subr-x))
-    (condition-case-unless-debug err
-        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                  ,@(when-let* ((depth (plist-get order :depth)))
-                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
-                                                  ,(plist-get order :repo) ,repo))))
-                  ((zerop (call-process "git" nil buffer t "checkout"
-                                        (or (plist-get order :ref) "--"))))
-                  (emacs (concat invocation-directory invocation-name))
-                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                  ((require 'elpaca))
-                  ((elpaca-generate-autoloads "elpaca" repo)))
-            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-          (error "%s" (with-current-buffer buffer (buffer-string))))
-      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-  (unless (require 'elpaca-autoloads nil t)
-    (require 'elpaca)
-    (elpaca-generate-autoloads "elpaca" repo)
-    (load "./elpaca-autoloads")))
-(add-hook 'after-init-hook #'elpaca-process-queues)
-(elpaca `(,@elpaca-order))
-
-(elpaca elpaca-use-package
-  ;; Enable use-package :ensure support for Elpaca.
-  (elpaca-use-package-mode))
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GENERAL EMACS CONFIG ;;
@@ -101,54 +62,44 @@
 (use-package magit)
 
 (use-package ef-themes
-  :ensure t
   :init (load-theme 'ef-bio t))
 
 (use-package exec-path-from-shell
-  :ensure t
   :init (when (memq window-system '(mac ns x))
 	  (exec-path-from-shell-initialize)))
 
-(use-package nerd-icons :ensure t)
+(use-package nerd-icons)
 
 (use-package doom-modeline
-  :ensure t
   :after (nerd-icons)
   :init
   (column-number-mode +1)
   (doom-modeline-mode 1))
 
 (use-package which-key
-  :ensure t
   :init (which-key-mode 1))
 
 (use-package ace-window
-  :ensure t
   :init (global-set-key (kbd "M-o") 'ace-window))
 
 (use-package paredit
-  :ensure t
   :hook ((clojure-mode cider-repl-mode emacs-lisp-mode) . paredit-mode))
 
 (use-package cider
-  :ensure t
   :bind (("C-x c r" . 'cider-repl-clear-buffer)))
 
 (use-package projectile
-  :ensure t
   :config
   (projectile-mode +1)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 (use-package pet
-  :ensure t
   :config
   (add-hook 'python-base-mode-hook 'pet-mode -10))
 
-(use-package lua-mode :ensure t)
+(use-package lua-mode)
 
 (use-package format-all
-  :ensure t
   :commands format-all-mode
   :hook (prog-mode . format-all-mode)
   :config
@@ -157,17 +108,15 @@
                   ("Shell" (shfmt "-i" "4" "-ci")))))
 
 
-(use-package zig-mode :ensure t)
+(use-package zig-mode)
 
 (use-package haskell-mode
-  :ensure t
   :custom
   (haskell-process-load-or-reload-prompt t))
 
-(use-package yasnippet-snippets :ensure t)
+(use-package yasnippet-snippets)
 
 (use-package yasnippet
-  :ensure t
   :config (yas-global-mode +1))
 
 ;; Rust mode
@@ -176,12 +125,39 @@
   :config
   (setq rust-format-on-save t))
 
-;; LSP support via eglot
+;; LSP support a eglot
 (use-package eglot
   :config
   (add-to-list 'eglot-server-programs '(rust-mode . ("rust-analyzer")))
   (add-to-list 'eglot-server-programs '(python-mode . ("pyright")))
   )
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; evil configuration ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Install and configure Evil
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil) ; important for evil-collection
+  :config
+  (evil-mode 1)
+
+  ;; Custom "jk" to escape insert mode
+  (define-key evil-insert-state-map (kbd "j") 
+    (lambda () (interactive)
+      (let ((next-key (read-event "j")))
+        (if (and (characterp next-key) (char-equal next-key ?k))
+            (evil-normal-state)
+          (insert "j")
+          (setq unread-command-events (list next-key)))))))
+
+;; Evil Collection for better integration with other modes
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Completion and Navigation ;;
@@ -190,7 +166,6 @@
 
 ;; Enable vertico
 (use-package vertico
-  :ensure t
   :custom
   (enable-recursive-minibuffers t)
   (vertico-resize t)
@@ -200,7 +175,6 @@
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
-  :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
@@ -208,7 +182,6 @@
 
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
-  :ensure t
   :bind (:map minibuffer-local-map
               ("M-A" . marginalia-cycle))
   :init (marginalia-mode))
@@ -216,7 +189,6 @@
 
 ;; Example configuration for Consult
 (use-package consult
-  :ensure t
   :bind (("C-c M-x" . consult-mode-command)
 	 ("C-c h" . consult-history)
          ("C-x C-r" . consult-recent-file)
@@ -248,20 +220,17 @@
   (setq consult-narrow-key "<"))
 
 (use-package embark
-  :ensure t
   :bind
   (("C-," . embark-act)
    ("C-;" . embark-dwim)
    ("C-h B" . embark-bindings)))
 
 (use-package embark-consult
-  :ensure t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; Enable Corfu for in-buffer completion
 (use-package corfu
-  :ensure t
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto-completion
@@ -273,7 +242,6 @@
   (corfu-popupinfo-mode +1))
 
 (use-package tree-sitter
-  :ensure t
   :init
   (setq treesit-language-source-alist
 	'((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -303,9 +271,6 @@
 
 (use-package tree-sitter-langs)
 
-
-;; load evil configuration
-(load-file "~/.emacs.d/elisp/completion-config.el")
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; UTILITY FUNCTIONS ;;
